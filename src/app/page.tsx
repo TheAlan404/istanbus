@@ -4,7 +4,7 @@ import { Stack, Code, Button } from "@mantine/core";
 import { useFetch } from "@mantine/hooks";
 
 export default function HomePage() {
-	const { data, error, loading, refetch } = useFetch("/api/duyuru");
+	const { data, error, loading, refetch } = useFetch("/api/hat");
 
 	return (
 		<Stack>

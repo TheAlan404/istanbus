@@ -1,13 +1,20 @@
 import { createClientAsync } from "soap/lib/soap";
 
-export const getSoap = (url: string, method: string, args: any) => {
-    return new Promise(async (resolve, reject) => {
+export const getSoap = <T>(url: string, method: string, args: any) => {
+    return new Promise<T>(async (resolve, reject) => {
         const client = await createClientAsync(url);
 
-        client[method]({}, function (err, result) {
+        if(!client[method]) {
+            return reject(client.describe());
+        }
+
+        client[method](args, function (err: any, result: any) {
             if (err) reject(err);
             console.log(result);
-            resolve(result);
+
+            let json = JSON.parse(result[`${method}Result`]) as T;
+
+            resolve(json);
         });
     });
 }

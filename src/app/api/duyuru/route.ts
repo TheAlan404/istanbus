@@ -1,11 +1,31 @@
 import { getSoap } from "../../../util/getSoap";
+import { Announcement } from "@/types/Announcement";
 
 const url = "https://api.ibb.gov.tr/iett/UlasimDinamikVeri/Duyurular.asmx?wsdl";
 
-export async function GET() {
-    let result: any = await getSoap(url, "GetDuyurular_json", {});
-    result = JSON.parse(result.GetDuyurular_jsonResult);
+interface IETTAnnouncement {
+    HATKODU: string;
+    HAT: string;
+    TIP: string;
+    GUNCELLEME_SAATI: string;
+    MESAJ: string;
+}
 
-    return Response.json({ result })
+export async function GET() {
+    let result = await getSoap<IETTAnnouncement[]>(url, "GetDuyurular_json", {});
+
+    return Response.json(result.map(({
+        GUNCELLEME_SAATI,
+        HAT,
+        HATKODU,
+        MESAJ,
+        TIP,
+    }) => ({
+        dateText: GUNCELLEME_SAATI,
+        id: HATKODU,
+        label: HAT,
+        message: MESAJ,
+        type: TIP
+    } as Announcement)))
 }
 
