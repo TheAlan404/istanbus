@@ -10,7 +10,6 @@ export const getSoap = <T>(url: string, method: string, args: any) => {
 
         client[method](args, function (err: any, result: any) {
             if (err) reject(err);
-            console.log(result);
 
             let json = JSON.parse(result[`${method}Result`]) as T;
 
