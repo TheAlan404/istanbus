@@ -11,7 +11,9 @@ export const getSoap = <T>(url: string, method: string, args: any) => {
         client[method](args, function (err: any, result: any) {
             if (err) reject(err);
 
-            let json = JSON.parse(result[`${method}Result`]) as T;
+            result = result[`${method}Result`];
+
+            let json = typeof result == "string" ? (JSON.parse(result) as T) : result;
 
             resolve(json);
         });
