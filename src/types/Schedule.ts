@@ -17,5 +17,7 @@ export type BusProvider = "OHO" | "OAS" | "IETT";
 
 export interface ScheduleEntry {
     provider: BusProvider;
+    marker?: string;
+    serviceType?: string;
     time: string;
 };

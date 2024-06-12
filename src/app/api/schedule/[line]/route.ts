@@ -9,8 +9,8 @@ interface IETTSchedule {
     SGUZERAH: string;
     SYON: "G" | "D";
     SGUNTIPI: "C" | "I" | "P";
-    GUZERGAH_ISARETI?: any;
-    SSERVISTIPI: "Normal" | "ÖHO" | "OAS";
+    GUZERGAH_ISARETI?: string;
+    SSERVISTIPI: "Normal" | "ÖHO" | "OAS" | "Ara Dinlen" | "Gareli";
     DT: string;
 };
 
@@ -58,12 +58,16 @@ export async function GET(
                 Normal: "IETT",
                 OAS: "OAS",
                 ÖHO: "OHO",
+                "Ara Dinlen": "IETT",
+                Gareli: "IETT",
             } as Record<IETTSchedule["SSERVISTIPI"], BusProvider>)[item.SSERVISTIPI],
+            marker: item.GUZERGAH_ISARETI,
             time: item.DT,
+            serviceType: ["Ara Dinlen", "Gareli"].includes(item.SSERVISTIPI) ? item.SSERVISTIPI : undefined,
         });
     };
 
-    return Response.json(schedule)
+    return Response.json(result)
 }
 
 

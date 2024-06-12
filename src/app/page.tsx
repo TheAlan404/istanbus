@@ -12,12 +12,12 @@ export default function HomePage() {
 	const { data: lines, loading } = useFetch<Line[]>("/api/lines");
 	const router = useRouter();
 
-	const filteredOptions = (lines || []).filter(line => 
+	const filteredOptions = (lines || []).filter(line =>
 		line.id.toLocaleLowerCase("tr") === search.toLocaleLowerCase("tr")
 	);
 
-	const partialMatches = (lines || []).filter(line => 
-		line.id.toLocaleLowerCase("tr") !== search.toLocaleLowerCase("tr") && 
+	const partialMatches = (lines || []).filter(line =>
+		line.id.toLocaleLowerCase("tr") !== search.toLocaleLowerCase("tr") &&
 		[
 			line.id.toLocaleLowerCase("tr"),
 			line.label.toLocaleLowerCase("tr"),
@@ -40,52 +40,51 @@ export default function HomePage() {
 
 	return (
 		<Stack align="center">
-			<Stack w={{ base: "100%", sm: "80%", md: "60%", lg: "50%" }} py="xl" gap="xl">
-				<Title>Istanbus</Title>
 
-				<Combobox
-					store={combobox}
-					withinPortal={false}
-					onOptionSubmit={(val) => {
-						setSearch(val);
-						combobox.closeDropdown();
-						select(val);
-					}}
-				>
-					<Combobox.Target>
-						<InputBase
-							rightSection={loading ? <Loader /> : <Combobox.Chevron />}
-							w="100%"
-							value={search}
-							onChange={(event) => {
-								combobox.openDropdown();
-								combobox.updateSelectedOptionIndex();
-								setSearch(event.currentTarget.value);
-							}}
-							onClick={() => combobox.openDropdown()}
-							onFocus={() => combobox.openDropdown()}
-							onBlur={() => {
-								combobox.closeDropdown();
-							}}
-							label="Hat ara"
-							placeholder="Kadıköy..."
-							rightSectionPointerEvents="none"
-						/>
-					</Combobox.Target>
+			<Title>Istanbus</Title>
 
-					<Combobox.Options p={0} mah={{ base: "50%" }}>
-						<Stack>
-							{options.length > 0 ? options : (
-								search ? (
-									<Combobox.Empty>Hat bulunamadı :c</Combobox.Empty>
-								) : (
-									<Combobox.Empty></Combobox.Empty>
-								)
-							)}
-						</Stack>
-					</Combobox.Options>
-				</Combobox>
-			</Stack>
+			<Combobox
+				store={combobox}
+				withinPortal={false}
+				onOptionSubmit={(val) => {
+					setSearch(val);
+					combobox.closeDropdown();
+					select(val);
+				}}
+			>
+				<Combobox.Target>
+					<InputBase
+						rightSection={loading ? <Loader /> : <Combobox.Chevron />}
+						w="100%"
+						value={search}
+						onChange={(event) => {
+							combobox.openDropdown();
+							combobox.updateSelectedOptionIndex();
+							setSearch(event.currentTarget.value);
+						}}
+						onClick={() => combobox.openDropdown()}
+						onFocus={() => combobox.openDropdown()}
+						onBlur={() => {
+							combobox.closeDropdown();
+						}}
+						label="Hat ara"
+						placeholder="Kadıköy..."
+						rightSectionPointerEvents="none"
+					/>
+				</Combobox.Target>
+
+				<Combobox.Options p={0} mah={{ base: "50%" }}>
+					<Stack>
+						{options.length > 0 ? options : (
+							search ? (
+								<Combobox.Empty>Hat bulunamadı :c</Combobox.Empty>
+							) : (
+								<Combobox.Empty></Combobox.Empty>
+							)
+						)}
+					</Stack>
+				</Combobox.Options>
+			</Combobox>
 		</Stack>
 	);
 }
