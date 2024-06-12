@@ -1,9 +1,11 @@
 import { Box } from "@mantine/core";
 
-export const Hat = () => {
+const Hat = () => {
     return (
         <Box>
             meow
         </Box>
     )
 }
+
+export default Hat;
