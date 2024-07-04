@@ -1,0 +1,24 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "run": "npx tsx src/index.ts",
+    "unpack": "npx nunzip data",
+    "pack": "npx gzipper c ./data"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "soap": "^0.39.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "tsx": "^4.16.2",
+    "gzipper": "^8.0.1",
+    "nunzip": "^1.0.8"
+  }
+}
