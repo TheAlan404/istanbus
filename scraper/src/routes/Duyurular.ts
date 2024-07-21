@@ -1,6 +1,6 @@
 import { getSoap } from "../getSoap";
 
-const url = "http://api.ibb.gov.tr/iett/UlasimDinamikVeri/Duyurular.asmx?wsdl";
+const url = "https://api.ibb.gov.tr/iett/UlasimDinamikVeri/Duyurular.asmx?wsdl";
 
 export interface IETTAnnouncement {
     HATKODU: string;
