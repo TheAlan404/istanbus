@@ -12,7 +12,7 @@ import { StopCard } from "../../components/cards/StopCard";
 
 export const LinePage = () => {
     const { line } = useParams();
-	const { data } = useFetch<LineDetails>(`/api/v1/line/${line}`);
+	const { data, loading } = useFetch<LineDetails>(`/api/v1/line/${line}`);
     const [direction, setDirection] = useState(0);
 
     let filteredAnnouncements = data?.announcements || [];
@@ -20,6 +20,10 @@ export const LinePage = () => {
 
     return (
         <Stack>
+            <Group justify="center">
+                {loading && <Loader />}
+            </Group>
+
             {!!filteredAnnouncements.length && (
                 <Accordion defaultValue="a">
                     <Accordion.Item value="a">

@@ -1,11 +1,11 @@
 import { IETTAnnouncement } from "../routes/Duyurular";
-import { IETTLine } from "../routes/HatDurakGuzergah";
+import { IETTLine, IETTStop } from "../routes/HatDurakGuzergah";
 import { IETTSchedule } from "../routes/PlanlananSeferSaati";
 import { IETTTable, IETTDurak } from "../routes/stops";
 import { Announcement } from "../../../common/types/Announcement";
 import { Line } from "../../../common/types/Line";
 import { BusProvider, Schedule, ScheduleDay } from "../../../common/types/Schedule";
-import { StopsResponse } from "../../../common/types/Stop";
+import { Stop, StopsResponse } from "../../../common/types/Stop";
 
 export const mapAllLines = (lines: IETTLine[]) => lines.map(({
     HAT_UZUNLUGU,
@@ -112,5 +112,24 @@ export const mapStops = (result: IETTTable<IETTDurak[]>) => {
     }
 
     return groups
+};
+
+export const mapAllStops = (result: IETTStop[]) => {
+    let stops = result.map(({
+        SDURAKKODU,
+        SDURAKADI,
+        KOORDINAT,
+        ILCEADI,
+    }) => ({
+        id: ""+SDURAKKODU,
+        name: SDURAKADI,
+        position: {
+            x: KOORDINAT.split(" ")[1].replace("(", ""),
+            y: KOORDINAT.split(" ")[2].replace(")", ""),
+        },
+        area: [ILCEADI],
+    } as Stop));
+
+    return stops;
 };
 

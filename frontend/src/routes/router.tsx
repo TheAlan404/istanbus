@@ -3,6 +3,7 @@ import AppBase from "../components/AppBase";
 import { ErrorPage } from "./ErrorPage";
 import { HomePage } from "./pages/HomePage";
 import { LinePage } from "./pages/LinePage";
+import { StopPage } from "./pages/StopPage";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
                     {
                         path: "/hat/:line",
                         element: <LinePage />,
+                    },
+                    {
+                        path: "/durak/:stop",
+                        element: <StopPage />,
                     },
                 ],
             }

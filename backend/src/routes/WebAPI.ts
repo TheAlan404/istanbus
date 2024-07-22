@@ -50,7 +50,7 @@ export type SearchItem = {
     Name: string;
     Location?: null;
     // 0 if its a line
-    StationCode: number;
+    Stationcode: number;
 }
 
 export const GetSearchItems = async (query: string) => {

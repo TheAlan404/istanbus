@@ -1,9 +1,10 @@
 import { Line } from "@common/types/Line"
 import { Grid, Group, Paper, Stack, Text } from "@mantine/core"
 import { IconRoute } from "@tabler/icons-react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-export const LineCard = ({ line }: { line: Line }) => {
+export const LineCard = ({ line, est }: { line: Line, est?: string }) => {
     return (
         <Paper
             c="var(--mantine-color-text)"
@@ -24,7 +25,62 @@ export const LineCard = ({ line }: { line: Line }) => {
                         <Text>{line.label}</Text>
                     </Stack>
                 </Grid.Col>
+                {est && (
+                    <Grid.Col span="content">
+                        <Estimation est={est} />
+                    </Grid.Col>
+                )}
             </Grid>
         </Paper>
     )
 }
+
+function automaticRelativeDifference(d) {
+	const diff = -((new Date().getTime() - d.getTime())/1000)|0;
+	const absDiff = Math.abs(diff);
+	console.log(diff);
+	if (absDiff > 86400*30*10) {
+		return { duration: Math.round(diff/(86400*365)), unit: 'years' };
+	}
+	if (absDiff > 86400*25) {
+		return { duration: Math.round(diff/(86400*30)), unit: 'months' };
+	}
+	if (absDiff > 3600*21) {
+		return { duration: Math.round(diff/86400), unit: 'days' };
+	}
+	if (absDiff > 60*44) {
+		return { duration: Math.round(diff/3600), unit: 'hours' };
+	}
+	if (absDiff > 30) {
+		return { duration: Math.round(diff/60), unit: 'minutes' };
+	}
+	return { duration: diff, unit: 'seconds' };
+}
+
+const Estimation = ({ est }: { est: string }) => {
+    const calc = () => {
+        let [h, m] = est.split(":").map(Number);
+        let date = new Date();
+        date.setHours(h);
+        date.setMinutes(m);
+        let formatter = new Intl.RelativeTimeFormat("tr", { style: "narrow", numeric: "auto" });
+        let { duration, unit } = automaticRelativeDifference(date);
+        return formatter.format(duration, unit as Intl.RelativeTimeFormatUnit);
+    };
+    
+    const [text, setText] = useState(calc());
+
+    useEffect(() => {
+        let i = setInterval(() => {
+            setText(calc());
+        }, 1000);
+        return () => clearInterval(i);
+    }, []);
+
+    return (
+        <Stack align="end" gap={0}>
+            <Text fw="bold">{text}</Text>
+            <Text>{est}</Text>
+        </Stack>
+    )
+};

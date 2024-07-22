@@ -1,6 +1,7 @@
 {
     "include": ["**/*"],
     "compilerOptions": {
-        "noEmit": true
+        "noEmit": true,
+        "target": "ESNext"
     }
 }

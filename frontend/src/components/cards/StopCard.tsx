@@ -20,11 +20,11 @@ export const StopCard = ({ stop }: { stop: Stop }) => {
                 </Grid.Col>
                 <Grid.Col span="auto">
                     <Stack gap={0}>
-                        <Group justify="space-between">
+                        <Group justify="space-between" wrap="nowrap">
                             <Text fw="bold">{stop.name}</Text>
-                            <Text c="dimmed">{stop.id}</Text>
+                            <Text c="dimmed" style={{ textWrap: "nowrap" }}>{stop.id}</Text>
                         </Group>
-                        <Text>{stop.area.join(", ")}</Text>
+                        <Text>{stop.area && stop.area.join(", ")}</Text>
                     </Stack>
                 </Grid.Col>
             </Grid>

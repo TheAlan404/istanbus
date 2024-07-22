@@ -41,3 +41,23 @@ export const getLineService = async (line: string) => {
         hat_kodu: line
     });
 }
+
+// backup idk
+/* const collectAllStops = async () => {
+    let alphabet = "abcçdefgğhıijklmnoöprsştuüvyz";
+    let obj: Record<string, string> = {};
+
+    for (let letter of alphabet) {
+        let results = await GetSearchItems(letter);
+
+        for(let result of results) {
+            if(!result.Stationcode) continue;
+            if(stops[result.Stationcode.toString()]) continue;
+            
+            obj[result.Stationcode.toString()] = result.Name.toLocaleUpperCase("tr");
+        }
+    }
+
+    stops = Object.entries(obj).map(([id, name]) => ({ id, name }))
+} */
+
