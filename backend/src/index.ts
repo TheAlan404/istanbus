@@ -4,7 +4,7 @@ import { getAnnouncements } from "./routes/Duyurular";
 import { getAllGarages, getAllLines, getAllStops } from "./routes/HatDurakGuzergah";
 import { getSchedule, IETTSchedule } from "./routes/PlanlananSeferSaati";
 import { getLineService, getStops, IETTDurak, IETTLineService, IETTTable } from "./routes/stops";
-import { LineDetails } from "./types/Line";
+import { LineDetails } from "../../common/types/Line";
 
 const scrapeRaw = async (overwrite = false) => {
     if (overwrite || !exists(`raw/GetDuyurular`)) await write("raw/GetDuyurular", await getAnnouncements());

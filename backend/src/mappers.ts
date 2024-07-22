@@ -2,10 +2,10 @@ import { IETTAnnouncement } from "./routes/Duyurular";
 import { IETTLine } from "./routes/HatDurakGuzergah";
 import { IETTSchedule } from "./routes/PlanlananSeferSaati";
 import { IETTTable, IETTDurak } from "./routes/stops";
-import { Announcement } from "./types/Announcement";
-import { Line } from "./types/Line";
-import { BusProvider, Schedule, ScheduleDay } from "./types/Schedule";
-import { StopsResponse } from "./types/Stop";
+import { Announcement } from "../../common/types/Announcement";
+import { Line } from "../../common/types/Line";
+import { BusProvider, Schedule, ScheduleDay } from "../../common/types/Schedule";
+import { StopsResponse } from "../../common/types/Stop";
 
 export const mapAllLines = (lines: IETTLine[]) => lines.map(({
     HAT_UZUNLUGU,

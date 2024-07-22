@@ -1,9 +1,9 @@
 "use client";
 import { AppShell, Button, Group, Stack } from "@mantine/core";
 import { IconList } from "@tabler/icons-react";
-import Link from "next/link";
+import { Link, Outlet } from "react-router-dom";
 
-const AppBase = ({ children }: React.PropsWithChildren) => {
+const AppBase = () => {
     return (
         <AppShell
             header={{ height: 60 }}
@@ -15,7 +15,7 @@ const AppBase = ({ children }: React.PropsWithChildren) => {
                         <Button
                             variant="transparent"
                             component={Link}
-                            href="/"
+                            to="/"
                         >
                             Istanbus
                         </Button>
@@ -30,7 +30,7 @@ const AppBase = ({ children }: React.PropsWithChildren) => {
                             <Button
                                 leftSection={icon}
                                 component={Link}
-                                href={link}
+                                to={link}
                                 key={i}
                             >
                                 {label}
@@ -42,7 +42,7 @@ const AppBase = ({ children }: React.PropsWithChildren) => {
             <AppShell.Main>
                 <Stack align="center">
                     <Stack w={{ base: "100%", sm: "80%", md: "60%", lg: "50%" }} py="xl" gap="xl">
-                        {children}
+                        <Outlet />
                     </Stack>
                 </Stack>
             </AppShell.Main>

@@ -1,10 +1,8 @@
-"use client";
-
 import { LineCard } from "../../components/cards/LineCard";
-import { Line } from "../../../scraper/src/types/Line";
 import { Loader, Stack, Text } from "@mantine/core";
 import { useFetch } from "@mantine/hooks";
 import { Suspense } from "react";
+import { Line } from "../../../../common/types/Line";
 
 export default function All() {
     const { data: lines, loading } = useFetch<Line[]>("/api/lines");

@@ -1,11 +1,9 @@
-"use client";
-import { Announcement } from "../../../../scraper/src/types/Announcement";
-import { Line } from "../../../../scraper/src/types/Line";
-import { Schedule } from "../../../../scraper/src/types/Schedule";
-import { StopsResponse } from "../../../../scraper/src/types/Stop";
+import { Line } from "@common/types/Line";
+import { Schedule } from "@common/types/Schedule";
+import { StopsResponse } from "@common/types/Stop";
+import { Announcement } from "@common/types/Announcement";
 import { Box, Button, Group, Stack } from "@mantine/core";
 import { useFetch } from "@mantine/hooks";
-import Link from "next/link";
 
 const Hat = ({ params: { line: id } }: { params: { line: string } }) => {
 	const { data: lines } = useFetch<Line[]>("/api/lines");

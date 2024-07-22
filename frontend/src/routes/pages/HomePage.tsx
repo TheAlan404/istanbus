@@ -1,16 +1,16 @@
 "use client";
 
-import { LineCard } from "../components/cards/LineCard";
-import { Line } from "../../scraper/src/types/Line";
-import { useRouter } from 'next/navigation';
+import { Line } from "@common/types/Line";
 import { Stack, Code, Button, useCombobox, Combobox, InputBase, Title, Loader } from "@mantine/core";
 import { useFetch } from "@mantine/hooks";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { LineCard } from "../../components/cards/LineCard";
 
 export default function HomePage() {
 	const [search, setSearch] = useState("");
 	const { data: lines, loading } = useFetch<Line[]>("/api/lines");
-	const router = useRouter();
+	const navigate = useNavigate();
 
 	const filteredOptions = (lines || []).filter(line =>
 		line.id.toLocaleLowerCase("tr") === search.toLocaleLowerCase("tr")
@@ -35,7 +35,7 @@ export default function HomePage() {
 	const combobox = useCombobox({});
 
 	const select = (id: string) => {
-		router.push(`/hat/${id}`);
+		navigate(`/hat/${id}`);
 	};
 
 	return (
