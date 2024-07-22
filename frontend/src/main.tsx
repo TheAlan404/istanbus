@@ -1,10 +1,11 @@
 import ReactDOM from 'react-dom/client'
-import { App } from './App.tsx'
 import { MantineProvider } from "@mantine/core";
-import './index.css'
+import { IstanbusRouter } from "./routes/router";
+import '@mantine/core/styles.css'
+import './style.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-	<MantineProvider>
-		<App />
+	<MantineProvider forceColorScheme="dark">
+		<IstanbusRouter />
 	</MantineProvider>,
 )

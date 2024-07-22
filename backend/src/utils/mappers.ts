@@ -1,11 +1,11 @@
-import { IETTAnnouncement } from "./routes/Duyurular";
-import { IETTLine } from "./routes/HatDurakGuzergah";
-import { IETTSchedule } from "./routes/PlanlananSeferSaati";
-import { IETTTable, IETTDurak } from "./routes/stops";
-import { Announcement } from "../../common/types/Announcement";
-import { Line } from "../../common/types/Line";
-import { BusProvider, Schedule, ScheduleDay } from "../../common/types/Schedule";
-import { StopsResponse } from "../../common/types/Stop";
+import { IETTAnnouncement } from "../routes/Duyurular";
+import { IETTLine } from "../routes/HatDurakGuzergah";
+import { IETTSchedule } from "../routes/PlanlananSeferSaati";
+import { IETTTable, IETTDurak } from "../routes/stops";
+import { Announcement } from "../../../common/types/Announcement";
+import { Line } from "../../../common/types/Line";
+import { BusProvider, Schedule, ScheduleDay } from "../../../common/types/Schedule";
+import { StopsResponse } from "../../../common/types/Stop";
 
 export const mapAllLines = (lines: IETTLine[]) => lines.map(({
     HAT_UZUNLUGU,
@@ -30,7 +30,7 @@ export const mapAnnouncements = (result: IETTAnnouncement[]) => result.map(({
     TIP,
 }) => ({
     dateText: GUNCELLEME_SAATI,
-    id: HATKODU,
+    line: HATKODU,
     label: HAT,
     message: MESAJ,
     type: TIP

@@ -1,5 +1,5 @@
 import { Line } from "../../../common/types/Line";
-import { getSoap } from "../getSoap";
+import { getSoap } from "../utils/getSoap";
 
 const url = "https://api.ibb.gov.tr/iett/UlasimAnaVeri/HatDurakGuzergah.asmx?wsdl";
 

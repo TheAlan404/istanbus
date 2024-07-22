@@ -1,5 +1,5 @@
 export interface Announcement {
-    id: string;
+    line: string;
     label: string;
     message: string;
     type: string; //"Sefer" | "Günlük";

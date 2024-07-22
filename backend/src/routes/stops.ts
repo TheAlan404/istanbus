@@ -1,4 +1,4 @@
-import { getSoap } from "../getSoap";
+import { getSoap } from "../utils/getSoap";
 
 const url = "https://api.ibb.gov.tr/iett/ibb/ibb.asmx?wsdl";
 

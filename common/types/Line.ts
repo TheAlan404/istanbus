@@ -1,3 +1,4 @@
+import { Announcement } from "./Announcement";
 import { Schedule } from "./Schedule";
 import { StopsDirection } from "./Stop";
 
@@ -13,4 +14,5 @@ export interface Line {
 export interface LineDetails extends Line {
     schedule: Schedule;
     stops: [StopsDirection, StopsDirection];
+    announcements: Announcement[];
 }

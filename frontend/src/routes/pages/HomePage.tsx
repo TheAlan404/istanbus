@@ -1,5 +1,3 @@
-"use client";
-
 import { Line } from "@common/types/Line";
 import { Stack, Code, Button, useCombobox, Combobox, InputBase, Title, Loader } from "@mantine/core";
 import { useFetch } from "@mantine/hooks";
@@ -7,9 +5,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LineCard } from "../../components/cards/LineCard";
 
-export default function HomePage() {
+export const HomePage = () => {
 	const [search, setSearch] = useState("");
-	const { data: lines, loading } = useFetch<Line[]>("/api/lines");
+	const { data: lines, loading } = useFetch<Line[]>("/api/v1/lines");
 	const navigate = useNavigate();
 
 	const filteredOptions = (lines || []).filter(line =>
@@ -73,7 +71,7 @@ export default function HomePage() {
 					/>
 				</Combobox.Target>
 
-				<Combobox.Options p={0} mah={{ base: "50%" }}>
+				<Combobox.Options w="100%" p={0} mah={{ base: "50%" }}>
 					<Stack>
 						{options.length > 0 ? options : (
 							search ? (

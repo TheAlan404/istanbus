@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import AppBase from "../components/AppBase";
 import { ErrorPage } from "./ErrorPage";
-import HomePage from "./pages/HomePage";
+import { HomePage } from "./pages/HomePage";
+import { LinePage } from "./pages/LinePage";
 
 const router = createBrowserRouter([
     {
-        path: "/",
         element: <AppBase />,
         errorElement: <ErrorPage />,
         children: [
@@ -15,7 +15,11 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <HomePage />,
-                    }
+                    },
+                    {
+                        path: "/hat/:line",
+                        element: <LinePage />,
+                    },
                 ],
             }
         ],

@@ -1,1 +1,7 @@
-{}
+{
+    "include": ["src/*"],
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "noEmit": true
+    }
+}

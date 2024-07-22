@@ -21,15 +21,12 @@ const AppBase = () => {
                         </Button>
 
                         {[
-                            {
-                                label: "Bütün Hatlar",
-                                link: "/all",
-                                icon: <IconList />,
-                            }
+                            
                         ].map(({ label, link, icon }, i) => (
                             <Button
                                 leftSection={icon}
                                 component={Link}
+                                variant="light"
                                 to={link}
                                 key={i}
                             >

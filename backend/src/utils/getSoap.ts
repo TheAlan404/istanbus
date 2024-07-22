@@ -1,8 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 
 export const getSoap = async <T>(url: string, method: string, args: Record<string, string> = {}): Promise<T> => {
-    //const client = await getClient(url);
-
     console.log("getSoap", url, method, args);
 
     let body = `<?xml version="1.0" encoding="utf-8"?>
@@ -13,8 +11,6 @@ export const getSoap = async <T>(url: string, method: string, args: Record<strin
                     </${method}>
                 </soap:Body>
             </soap:Envelope>`;
-
-    //console.log(body);
 
     let res = await fetch(url, {
         method: "POST",
@@ -32,11 +28,17 @@ export const getSoap = async <T>(url: string, method: string, args: Record<strin
 
     let xml = parser.parse(text);
 
-    //console.log(xml);
+    try {
+        let result = xml["soap:Envelope"]["soap:Body"][`${method}Response`][`${method}Result`];
+        let json = typeof result == "string" ? (JSON.parse(result) as T) : result as T;
+        return json;
+    } catch(e) {
+        console.log(e);
 
-    let result = xml["soap:Envelope"]["soap:Body"][`${method}Response`][`${method}Result`];
+        console.log(xml);
+        
+        console.log(text);
 
-    let json = typeof result == "string" ? (JSON.parse(result) as T) : result as T;
-
-    return json;
+        throw e;
+    }
 }
