@@ -28,6 +28,8 @@ export const GetStationInfo = async (line: string) => {
             estimation: x["p"]["b"].split(" ")[0].replace("(", "").replace(")", ""),
         } as StationInfoItem)) as StationInfoItem[];
 
+    console.log(notes);
+
     return { notes, busses };
 };
 
@@ -41,8 +43,21 @@ export const GetRouteByStation = async (line: string) => {
     let parser = new XMLParser();
     let xml = parser.parse(text);
 
-    throw new Error("unimplemented!()");
+    let lines: string[] = [];
+    
+    const map = (x) => {
+        let id = ""+x.a.span[0] as string;
+        lines.push(id);
+
+        if(x.div) map(x.div);
+    };
+
+    map(xml.div);
+
+    return lines;
 };
+
+GetRouteByStation("111051")
 
 export type SearchItem = {
     Path: string;

@@ -4,6 +4,7 @@ import { ErrorPage } from "./ErrorPage";
 import { HomePage } from "./pages/HomePage";
 import { LinePage } from "./pages/LinePage";
 import { StopPage } from "./pages/StopPage";
+import { AnnouncementsPage } from "./pages/Announcements";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
                     {
                         path: "/durak/:stop",
                         element: <StopPage />,
+                    },
+                    {
+                        path: "/duyurular",
+                        element: <AnnouncementsPage />,
                     },
                 ],
             }

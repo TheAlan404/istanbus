@@ -5,7 +5,7 @@ import { getAnnouncements } from "../routes/Duyurular";
 import { Announcement } from "../../../common/types/Announcement";
 import { getLineService, getStops } from "../routes/stops";
 import { getSchedule } from "../routes/PlanlananSeferSaati";
-import { GetSearchItems, GetStationInfo } from "../routes/WebAPI";
+import { GetRouteByStation, GetSearchItems, GetStationInfo } from "../routes/WebAPI";
 import { Line, LineDetails } from "../../../common/types/Line";
 import { SearchResult } from "../../../common/types/Search";
 import { Stop } from "../../../common/types/Stop";
@@ -16,16 +16,15 @@ let announcements: Announcement[] = [];
 let lines: Line[] = [];
 let stops: Stop[] = [];
 
-getAllStops().then(x => stops = mapAllStops(x))
+getAllStops().then(x => stops = mapAllStops(x).sort((a, b) => a.name.localeCompare(b.name, "tr")))
 getAnnouncements().then(a => announcements = mapAnnouncements(a));
-getAllLines().then(l => lines = mapAllLines(l));
+getAllLines().then(l => lines = mapAllLines(l).sort((a, b) => a.id.localeCompare(b.id, "tr")));
 setInterval(async () => {
     announcements = mapAnnouncements(await getAnnouncements());
-    lines = mapAllLines(await getAllLines());
 }, 5 * 60 * 1000);
 
 api.get("/lines", async (req, res) => {
-    res.json(mapAllLines(await getAllLines()))
+    res.json(lines)
 })
 
 api.get("/line/:id", async (req, res) => {
@@ -42,6 +41,7 @@ api.get("/line/:id", async (req, res) => {
 
     let data: LineDetails = {
         ...line,
+        duration: Number(hatServisi.NewDataSet.Table.SEFER_SURESI),
         schedule,
         announcements: announcements.filter(a => a.line == id),
         stops: [
@@ -61,10 +61,12 @@ api.get("/stop/:id", async (req, res) => {
     let { id } = req.params;
     
     let { busses } = await GetStationInfo(id);
+    let passingLineIds = await GetRouteByStation(id);
 
     res.json({
         busses: busses.map(bus => ({ estimation: bus.estimation, ...(lines.find(x => x.id == bus.line)) })),
         stop: stops.find(x => x.id == id),
+        lines: lines.filter(x => passingLineIds.includes(x.id)),
     });
 });
 

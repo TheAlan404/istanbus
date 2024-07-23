@@ -35,10 +35,9 @@ export const LineCard = ({ line, est }: { line: Line, est?: string }) => {
     )
 }
 
-function automaticRelativeDifference(d) {
+function automaticRelativeDifference(d: Date) {
 	const diff = -((new Date().getTime() - d.getTime())/1000)|0;
 	const absDiff = Math.abs(diff);
-	console.log(diff);
 	if (absDiff > 86400*30*10) {
 		return { duration: Math.round(diff/(86400*365)), unit: 'years' };
 	}

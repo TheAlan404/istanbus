@@ -1,13 +1,26 @@
 import { Announcement } from "@common/types/Announcement";
-import { Alert, Group, Stack, Text } from "@mantine/core";
+import { Alert, Button, Group, Stack, Text } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 export const AnnouncementCard = ({
     announcement,
 }: { announcement: Announcement }) => {
     return (
         <Alert
-            title={announcement.line + " | " + announcement.label}
+            title={(
+                <Group>
+                    <Button
+                        variant="outline"
+                        size="compact-sm"
+                        component={Link}
+                        to={`/hat/${announcement.line}`}
+                    >
+                        {announcement.line}
+                    </Button>
+                    <Text inherit>{announcement.label}</Text>
+                </Group>
+            )}
             icon={<IconInfoCircle />}
         >
             <Stack>

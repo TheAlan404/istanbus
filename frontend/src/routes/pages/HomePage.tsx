@@ -109,7 +109,7 @@ export const HomePage = () => {
 						onBlur={() => {
 							combobox.closeDropdown();
 						}}
-						label="Hat ara"
+						label="Ara"
 						placeholder="Kadıköy..."
 						rightSectionPointerEvents="none"
 					/>

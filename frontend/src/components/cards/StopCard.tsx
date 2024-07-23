@@ -3,7 +3,7 @@ import { Grid, Group, Paper, Stack, Text } from "@mantine/core"
 import { IconBusStop } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
 
-export const StopCard = ({ stop }: { stop: Stop }) => {
+export const StopCard = ({ stop, index }: { stop: Stop, index?: number }) => {
     return (
         <Paper
             c="var(--mantine-color-text)"
@@ -16,7 +16,12 @@ export const StopCard = ({ stop }: { stop: Stop }) => {
         >
             <Grid gutter="sm">
                 <Grid.Col span="content">
-                    <IconBusStop />
+                    <Stack gap={0} align="center">
+                        <IconBusStop />
+                        {index && (
+                            <Text fw="bold">#{index}</Text>
+                        )}
+                    </Stack>
                 </Grid.Col>
                 <Grid.Col span="auto">
                     <Stack gap={0}>
