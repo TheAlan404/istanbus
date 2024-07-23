@@ -1,7 +1,7 @@
 "use client";
 import { AppShell, Button, Group, Space, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { IconList, IconSpeakerphone } from "@tabler/icons-react";
+import { IconExternalLink, IconList, IconSpeakerphone } from "@tabler/icons-react";
 import { Link, Outlet } from "react-router-dom";
 
 const AppBase = () => {
@@ -39,6 +39,17 @@ const AppBase = () => {
                                     {label}
                                 </Button>
                             ))}
+                        </Group>
+                        <Group>
+                            <Button
+                                variant="light"
+                                component="a"
+                                href="https://deniz.blue"
+                                rightSection={<IconExternalLink />}
+                                color="gray"
+                            >
+                                deniz.blue
+                            </Button>
                         </Group>
                     </Group>
                 </AppShell.Header>
