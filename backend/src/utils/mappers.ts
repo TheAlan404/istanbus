@@ -44,7 +44,11 @@ const getDay = ({ SGUNTIPI }: IETTSchedule) => ({
     P: "sunday",
 } as Record<IETTSchedule["SGUNTIPI"], ScheduleDay["type"]>)[SGUNTIPI];
 
-const getBetween = (name: string) => name.split("-").map(x => x.trim());
+const getBetween = (name: string) => {
+    let a = name.split("-").map(x => x.trim());
+
+    return [a[0], a[a.length-1]]
+};
 
 export const mapSchedule = (result: IETTSchedule[]) => {
     let schedule: Schedule = {

@@ -1,4 +1,4 @@
-import { XMLParser } from "fast-xml-parser";
+import { getXML } from "../utils/getXML";
 
 export interface StationInfoItem {
     line: string;
@@ -7,15 +7,16 @@ export interface StationInfoItem {
 };
 
 export const GetStationInfo = async (line: string) => {
-    let res = await fetch("https://iett.istanbul/tr/RouteStation/GetStationInfo" + "?" + new URLSearchParams({
+    let xml = await getXML("https://iett.istanbul/tr/RouteStation/GetStationInfo", {
         langid: "1",
         dcode: line,
-    }).toString(), {});
+    });
 
-    let text = await res.text();
-    let parser = new XMLParser();
-    let xml = parser.parse(text);
+    if(!xml["div"]) {
+        console.log(JSON.stringify(xml))
 
+        return { notes: [], busses: [] }
+    };
 
     let notes = xml["div"][0]["p"] as string[];
 
@@ -34,14 +35,15 @@ export const GetStationInfo = async (line: string) => {
 };
 
 export const GetRouteByStation = async (line: string) => {
-    let res = await fetch("https://iett.istanbul/tr/RouteStation/GetRouteByStation" + "?" + new URLSearchParams({
+    let xml = await getXML("https://iett.istanbul/tr/RouteStation/GetRouteByStation", {
         langid: "1",
         dcode: line,
-    }).toString(), {});
+    });
 
-    let text = await res.text();
-    let parser = new XMLParser();
-    let xml = parser.parse(text);
+    if(!xml["div"]) {
+        console.log(JSON.stringify(xml))
+        return []
+    };
 
     let lines: string[] = [];
     
