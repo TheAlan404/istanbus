@@ -3,32 +3,9 @@ import { modals } from "@mantine/modals";
 import { ScheduleDay, ScheduleEntry } from "../../../../common/types/Schedule";
 import { useDate } from "../../hooks/useDate";
 import { Announcement } from "@common/types/Announcement";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { IconSpeakerphone, IconX } from "@tabler/icons-react";
 import { AnnouncementCard } from "./AnnouncementCard";
-
-export const isToday = (day?: ScheduleDay["type"]) => {
-    let currentDate = new Date();
-
-    let today = false;
-    if(day == "sunday" && currentDate.getDay() == 0) today = true;
-    if(day == "saturday" && currentDate.getDay() == 6) today = true;
-    if(day == "workdays" && currentDate.getDay() != 0 && currentDate.getDay() != 6) today = true;
-
-    return today;
-};
-
-export const isAvailable = (entry: ScheduleEntry) => {
-    let currentDate = new Date();
-
-    let entryDate = new Date();
-    let [h, m] = entry.time.split(":").map(Number);
-    entryDate.setHours(h);
-    entryDate.setMinutes(m);
-
-    let available = entry.time == "00:00" || currentDate.getTime() <= entryDate.getTime();
-
-    return available;
-};
+import { isAvailable, isToday } from "../../utils/schedule";
 
 export const ScheduleEntryCard = ({
     entry,
@@ -45,7 +22,7 @@ export const ScheduleEntryCard = ({
 
     let c = "dimmed";
     if(isAvailable(entry) && isToday(day)) c = "green";
-    if(c == "green" && !!announcements?.length) c = "yellow";
+    if(c == "green" && !!announcements?.length) c = "red";
     
     return (
         <Stack align="center">
@@ -56,6 +33,7 @@ export const ScheduleEntryCard = ({
                     modals.open({
                         title: "Duyurular",
                         withinPortal: false,
+                        size: "100%",
                         children: (
                             <Stack>
                                 {announcements?.map((a, i) => <AnnouncementCard announcement={a} key={i} />)}
@@ -64,15 +42,15 @@ export const ScheduleEntryCard = ({
                     })
                 })}
             >
-                <Group gap="xs">
-                    {!!announcements?.length && (
-                        <IconInfoCircle />
-                    )}
-                    <Text fw="bold" c={c}>
+                <Group gap="xs" c={c} wrap="nowrap" style={{ textWrap: "nowrap" }}>
+                    <Text fw="bold" td={!!announcements?.length ? "line-through 2px" : ""}>
                         {entry.time}
                     </Text>
                     {entry.marker && (
                         <Text>{entry.marker}</Text>
+                    )}
+                    {!!announcements?.length && (
+                        <IconX />
                     )}
                 </Group>
             </Paper>

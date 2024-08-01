@@ -1,8 +1,9 @@
 "use client";
-import { AppShell, Button, Group, Space, Stack } from "@mantine/core";
+import { ActionIcon, AppShell, Box, Button, Group, Space, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { IconExternalLink, IconList, IconSpeakerphone } from "@tabler/icons-react";
+import { IconExternalLink, IconHome, IconList, IconSpeakerphone } from "@tabler/icons-react";
 import { Link, Outlet } from "react-router-dom";
+import { SearchBar } from "./SearchBar";
 
 const AppBase = () => {
     return (
@@ -12,15 +13,24 @@ const AppBase = () => {
                 px="md"
             >
                 <AppShell.Header>
-                    <Group justify="space-between" align="center" h="100%" px="sm">
+                    <Group justify="space-between" wrap="nowrap" align="center" h="100%" px="sm">
                         <Group>
                             <Button
                                 variant="transparent"
                                 component={Link}
                                 to="/"
+                                visibleFrom="md"
                             >
                                 Istanbus
                             </Button>
+                            <ActionIcon
+                                variant="transparent"
+                                component={Link}
+                                to="/"
+                                hiddenFrom="md"
+                            >
+                                <IconHome />
+                            </ActionIcon>
 
                             {[
                                 {
@@ -29,17 +39,32 @@ const AppBase = () => {
                                     icon: <IconSpeakerphone />,
                                 }
                             ].map(({ label, link, icon }, i) => (
-                                <Button
-                                    leftSection={icon}
-                                    component={Link}
-                                    variant="light"
-                                    to={link}
-                                    key={i}
-                                >
-                                    {label}
-                                </Button>
+                                <Box>
+                                    <Button
+                                        leftSection={icon}
+                                        component={Link}
+                                        variant="light"
+                                        to={link}
+                                        key={i}
+                                        visibleFrom="md"
+                                    >
+                                        {label}
+                                    </Button>
+                                    <ActionIcon
+                                        component={Link}
+                                        variant="light"
+                                        to={link}
+                                        key={i}
+                                        hiddenFrom="md"
+                                    >
+                                        {icon}
+                                    </ActionIcon>
+                                </Box>
                             ))}
                         </Group>
+
+                        <SearchBar />
+
                         <Group>
                             <Button
                                 variant="light"
@@ -47,9 +72,19 @@ const AppBase = () => {
                                 href="https://deniz.blue"
                                 rightSection={<IconExternalLink />}
                                 color="gray"
+                                visibleFrom="md"
                             >
                                 deniz.blue
                             </Button>
+                            <ActionIcon
+                                variant="light"
+                                component="a"
+                                href="https://deniz.blue"
+                                color="gray"
+                                hiddenFrom="md"
+                            >
+                                <IconExternalLink />
+                            </ActionIcon>
                         </Group>
                     </Group>
                 </AppShell.Header>

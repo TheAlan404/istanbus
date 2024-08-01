@@ -1,10 +1,10 @@
 import { Announcement } from "@common/types/Announcement";
-import { Chip, CloseIcon, Group, MultiSelect, SegmentedControl, Stack } from "@mantine/core";
+import { Chip, CloseIcon, Group, Loader, MultiSelect, SegmentedControl, Stack } from "@mantine/core";
 import { useFetch } from "@mantine/hooks";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { AnnouncementCard } from "../../components/cards/AnnouncementCard";
 import { IconSpeakerphone } from "@tabler/icons-react";
-import { Header } from "../../components/layout/Header";
+import { Header } from "../../components/ui/Header";
 
 export const AnnouncementsPage = () => {
     const [lineFilter, setLineFilter] = useState<string[]>([]);
@@ -31,7 +31,7 @@ export const AnnouncementsPage = () => {
                     data={[
                         { value: "none", label: "Hepsi" },
                         { value: "Günlük", label: "Günlük" },
-                        { value: "Sefer", label: "Sefer" },
+                        { value: "Sefer", label: "Sefer İptalleri" },
                     ]}
                     value={typeFilter}
                     onChange={(v: "none" | "Günlük" | "Sefer") => setTypeFilter(v)}
@@ -50,12 +50,16 @@ export const AnnouncementsPage = () => {
             </Group>
 
             <Stack>
-                {list.map((a, i) => (
-                    <AnnouncementCard
-                        announcement={a}
-                        key={i}
-                    />
-                ))}
+                {loading && <Loader />}
+
+                <Suspense fallback={<Loader />}>
+                    {list.map((a, i) => (
+                        <AnnouncementCard
+                            announcement={a}
+                            key={i}
+                        />
+                    ))}
+                </Suspense>
             </Stack>
         </Stack>
     )

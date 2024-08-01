@@ -29,11 +29,15 @@ export const mapAnnouncements = (result: IETTAnnouncement[]) => result.map(({
     MESAJ,
     TIP,
 }) => ({
-    dateText: GUNCELLEME_SAATI,
+    dateText: GUNCELLEME_SAATI.split(" ")[2],
     line: HATKODU,
     label: HAT,
     message: MESAJ,
-    type: TIP
+    type: TIP as "Sefer" | "Günlük",
+    ...(TIP == "Sefer" ? {
+        direction: MESAJ.split("dan")[0].trim(),
+        time: MESAJ.split(" ").find(x => x.includes(":")),
+    } : {}),
 } as Announcement));
 
 const getDir = ({ SYON }: IETTSchedule) => SYON == "G" ? 0 : 1;

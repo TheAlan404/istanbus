@@ -1,7 +1,14 @@
-export interface Announcement {
+export type Announcement = {
     line: string;
     label: string;
     message: string;
-    type: string; //"Sefer" | "Günlük";
     dateText: string;
-};
+} & (
+    {
+        type: "Sefer"; // "Sefer"
+        direction: string;
+        time: string;
+    } | {
+        type: "Günlük"; // "Günlük"
+    }
+);

@@ -2,6 +2,9 @@
     background-color: var(--mantine-color-dark-5);
 }
 
-.ptr {
-    cursor: pointer;
+@font-face {
+    font-family: "Lexend-VariableFont";
+    src:
+        local("Lexend-VariableFont"),
+        url("https://deniz.blue/fonts/Lexend-VariableFont_wght.ttf");
 }

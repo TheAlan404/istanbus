@@ -1,23 +1,46 @@
 import { Line } from "@common/types/Line"
-import { Grid, Group, Paper, Stack, Text } from "@mantine/core"
+import { Grid, Group, Loader, Paper, Stack, Text } from "@mantine/core"
+import { useFetch } from "@mantine/hooks"
 import { IconRoute } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-export const LineCard = ({ line, est }: { line: Line, est?: string }) => {
+export const LineCardFromID = ({ id }: { id: string }) => {
+    const { data } = useFetch<Line>("/api/v1/quick?" + new URLSearchParams({ type: "line", id }).toString());
+
+    return (
+        <LineCard
+            line={{
+                id,
+                label: "Yükleniyor...",
+                ...(data || {}),
+            } as Line}
+        />
+    )
+}
+
+export const LineCard = ({
+    line,
+    est,
+    loading,
+}: {
+    line: Line,
+    est?: string,
+    loading?: boolean,
+}) => {
     return (
         <Paper
             c="var(--mantine-color-text)"
             className="hoverable"
             component={Link}
-            to={`/hat/${line.id}`}
+            to={`/hat/${line?.id}`}
             p="xs"
             withBorder
             shadow="md"
         >
             <Grid gutter="sm">
                 <Grid.Col span="content">
-                    <IconRoute />
+                    {loading ? <Loader /> : <IconRoute />}
                 </Grid.Col>
                 <Grid.Col span="auto">
                     <Stack gap={0}>

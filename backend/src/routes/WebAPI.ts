@@ -10,7 +10,7 @@ export const GetStationInfo = async (line: string) => {
     let xml = await getXML("https://iett.istanbul/tr/RouteStation/GetStationInfo", {
         langid: "1",
         dcode: line,
-    });
+    }) as any;
 
     if(!xml["div"]) {
         console.log(JSON.stringify(xml))
@@ -20,7 +20,8 @@ export const GetStationInfo = async (line: string) => {
 
     let notes = xml["div"][0]["p"] as string[];
 
-    let busses = xml["div"][1]["div"]
+    let thing = xml["div"][1]["div"];
+    let busses = (Array.isArray(thing) ? thing : [thing])
         .map(x => x["div"])
         .filter(x => x["span"])
         .map(x => ({
@@ -29,8 +30,6 @@ export const GetStationInfo = async (line: string) => {
             estimation: x["p"]["b"].split(" ")[0].replace("(", "").replace(")", ""),
         } as StationInfoItem)) as StationInfoItem[];
 
-    console.log(notes);
-
     return { notes, busses };
 };
 
@@ -38,7 +37,7 @@ export const GetRouteByStation = async (line: string) => {
     let xml = await getXML("https://iett.istanbul/tr/RouteStation/GetRouteByStation", {
         langid: "1",
         dcode: line,
-    });
+    }) as any;
 
     if(!xml["div"]) {
         console.log(JSON.stringify(xml))
@@ -58,8 +57,6 @@ export const GetRouteByStation = async (line: string) => {
 
     return lines;
 };
-
-GetRouteByStation("111051")
 
 export type SearchItem = {
     Path: string;

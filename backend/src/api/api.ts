@@ -30,7 +30,9 @@ api.get("/lines", async (req, res) => {
 api.get("/line/:id", async (req, res) => {
     let { id } = req.params;
 
-    let line = lines.find(x => x.id == id)!;
+    let line = lines.find(x => x.id == id);
+
+    if(!line) return res.status(404);
 
     let durakDetay = await getStops(id);
     let hatServisi = await getLineService(id);
@@ -54,51 +56,89 @@ api.get("/line/:id", async (req, res) => {
 })
 
 api.get("/announcements", async (req, res) => {
-    res.json(announcements)
+    let { lines: _lines } = req.query;
+
+    if(typeof _lines !== "string" && typeof _lines !== "undefined") return res.status(400).json("no");
+
+    let lines = (_lines || "").split(";").filter(x=>x);
+
+    res.json(lines.length ? (
+        announcements.filter(a => lines.includes(a.line))
+    ) : announcements)
 })
 
 api.get("/stop/:id", async (req, res) => {
     let { id } = req.params;
     
-    let { busses } = await GetStationInfo(id);
     let passingLineIds = await GetRouteByStation(id);
 
     res.json({
-        busses: busses.map(bus => ({ estimation: bus.estimation, ...(lines.find(x => x.id == bus.line)) })),
         stop: stops.find(x => x.id == id),
         lines: lines.filter(x => passingLineIds.includes(x.id)),
     });
+});
+
+api.get("/busses/:id", async (req, res) => {
+    let { id } = req.params;
+    
+    let { busses } = await GetStationInfo(id);
+
+    res.json(
+        busses
+            .map(bus => ({
+                estimation: bus.estimation,
+                ...(lines.find(x => x.id == bus.line))
+            })),
+    );
 });
 
 api.get("/all", async (req, res) => {
     res.json({ lines, stops })
 });
 
+api.get("/quick", async (req, res) => {
+    let { type, id } = req.query;
+
+    res.json(
+        (type == "line" ? lines : stops).find(x => x.id == id)
+    )
+});
+
 api.get("/searchSuggestions", async (req, res) => {
-    let { q } = req.query;
+    let { q, filter } = req.query;
 
     let query = (""+q).toLocaleUpperCase("tr");
 
     let exact: SearchResult[] = [];
     let partial: SearchResult[] = [];
 
-    for(let line of lines) {
-        if (line.id == query) {
-            exact.push({ type: "line", ...line });
-            continue;
-        }
+    const limit = 20;
 
-        if ([line.id, line.label].join(" ").toLocaleUpperCase("tr").includes(query)) {
-            partial.push({ type: "line", ...line });
+    if (filter == "line" || filter == "none" || !filter) {
+        for (let line of lines || []) {
+            if((exact.length + partial.length) > limit) break;
+
+            if (line.id == query) {
+                exact.push({ type: "line", ...line });
+                continue;
+            }
+
+            if ([line.id, line.label].join(" ").toLocaleUpperCase("tr").includes(query)) {
+                partial.push({ type: "line", ...line });
+            }
         }
     }
 
-    for(let stop of Object.values(stops)) {
-        if (stop.name.includes(query)) {
-            partial.push({ type: "stop", ...stop });
+    if (filter == "stop" || filter == "none" || !filter) {
+        for (let stop of stops || []) {
+            if((exact.length + partial.length) > limit) break;
+
+            if (stop.name.includes(query)) {
+                partial.push({ type: "stop", ...stop });
+            }
         }
     }
-
+    
     let items = [...exact, ...partial].slice(0, 100);
 
     res.json(items);
