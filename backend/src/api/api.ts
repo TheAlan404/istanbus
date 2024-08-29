@@ -56,15 +56,16 @@ api.get("/line/:id", async (req, res) => {
 })
 
 api.get("/announcements", async (req, res) => {
-    let { lines: _lines } = req.query;
+    let { lines: _lines, type } = req.query;
 
     if(typeof _lines !== "string" && typeof _lines !== "undefined") return res.status(400).json("no");
 
     let lines = (_lines || "").split(";").filter(x=>x);
 
-    res.json(lines.length ? (
-        announcements.filter(a => lines.includes(a.line))
-    ) : announcements)
+    res.json(announcements.filter(a => (
+        (!lines.length || lines.includes(a.line))
+        && (!type || a.type == type)
+    )))
 })
 
 api.get("/stop/:id", async (req, res) => {
@@ -81,7 +82,9 @@ api.get("/stop/:id", async (req, res) => {
 api.get("/busses/:id", async (req, res) => {
     let { id } = req.params;
     
-    let { busses } = await GetStationInfo(id);
+    let { busses, notes } = await GetStationInfo(id);
+
+    console.log(notes);
 
     res.json(
         busses

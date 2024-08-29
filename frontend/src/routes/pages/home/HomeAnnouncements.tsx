@@ -8,7 +8,7 @@ import { Announcement } from "@common/types/Announcement";
 
 export const HomeAnnouncements = () => {
     const { faves } = useFaves();
-    let faveLines = faves.filter(f => f.ty == "line");
+    let faveLines = faves.filter(f => f.ty == "line").map(x => x.id);
     const { data, loading, refetch, error } = useFetch<Announcement[]>("/api/v1/announcements?" + new URLSearchParams({
         lines: (faveLines.length ? faveLines : ["NULL"]).join(";")
     }).toString());
@@ -46,7 +46,9 @@ export const HomeAnnouncements = () => {
                 </Accordion>
             ) : (
                 <Text c="dimmed" ta="center">
-                    {faveLines.length ? "Favori hatlarınızdan duyuru yok :D" : "Favorilenen hatların duyuruları burada gösterilecektir"}
+                    {faveLines.length ? (
+                        loading ? "Duyurular yükleniyor..." : "Favori hatlarınızdan duyuru yok :D"
+                    ) : "Favorilenen hatların duyuruları burada gösterilecektir"}
                 </Text>
             )}
         </Stack>

@@ -58,7 +58,7 @@ export const HomeSearch = ({
 			>
 				<Combobox.Target>
 					<InputBase
-						rightSection={loading ? <Loader /> : <Combobox.Chevron />}
+						rightSection={loading ? <Loader m="xs" /> : <Combobox.Chevron />}
 						w="100%"
 						value={search}
 						onChange={(event) => {

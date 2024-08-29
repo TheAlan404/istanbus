@@ -24,7 +24,7 @@ export const LinePage = () => {
                 loading={loading}
                 onReload={refetch}
                 favourite={faves.some(f => f.ty == "line" && f.id == line)}
-                setFavourite={(f) => setFaves(f ? [...faves, { ty: "line", id: line }] : faves.filter(l => l.ty !== "line" && l.id !== line))}
+                setFavourite={(f) => setFaves(f ? [...faves, { ty: "line", id: line }] : faves.filter(l => !(l.ty == "line" && l.id == line)))}
             />
 
             <Group>

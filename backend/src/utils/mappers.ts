@@ -28,17 +28,27 @@ export const mapAnnouncements = (result: IETTAnnouncement[]) => result.map(({
     HATKODU,
     MESAJ,
     TIP,
-}) => ({
-    dateText: GUNCELLEME_SAATI.split(" ")[2],
-    line: HATKODU,
-    label: HAT,
-    message: MESAJ,
-    type: TIP as "Sefer" | "Günlük",
-    ...(TIP == "Sefer" ? {
-        direction: MESAJ.split("dan")[0].trim(),
-        time: MESAJ.split(" ").find(x => x.includes(":")),
-    } : {}),
-} as Announcement));
+}): Announcement => {
+    let isCancellation = (
+        MESAJ.includes(" dan Saat ")
+        && MESAJ.split(" dan Saat ")[1].slice(5)
+        == " de hareket etmesi planlanan seferimiz  çesitli nedenlerle yapilamayacaktir."
+    );
+
+    return {
+        dateText: GUNCELLEME_SAATI.split(" ")[2],
+        line: HATKODU,
+        label: HAT,
+        message: MESAJ,
+        ...(isCancellation ? {
+            type: "cancellation",
+            direction: MESAJ.split("dan")[0].trim(),
+            time: MESAJ.split(" ").find(x => x.includes(":"))!,
+        } : {
+            type: TIP as "Sefer" | "Günlük",
+        }),
+    }
+});
 
 const getDir = ({ SYON }: IETTSchedule) => SYON == "G" ? 0 : 1;
 

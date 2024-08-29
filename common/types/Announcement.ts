@@ -5,10 +5,12 @@ export type Announcement = {
     dateText: string;
 } & (
     {
-        type: "Sefer"; // "Sefer"
+        type: "cancellation";
         direction: string;
         time: string;
     } | {
         type: "Günlük"; // "Günlük"
+    } | {
+        type: "Sefer"; // "Sefer"
     }
 );

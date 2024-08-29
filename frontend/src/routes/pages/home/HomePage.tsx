@@ -8,7 +8,7 @@ import { useState } from "react";
 import { FavesList } from "./FavesList";
 
 export const HomePage = () => {
-	const [filter, setFilter] = useState<"none" | "stop" | "line" | "fav">("none");
+	const [filter, setFilter] = useState<"stop" | "line" | "fav">("line");
 
 	return (
 		<Stack align="center" w="100%">
@@ -19,13 +19,12 @@ export const HomePage = () => {
 				<SegmentedControl
 					fullWidth
 					data={[
-						{ label: "Hepsi", value: "none" },
 						{ label: "Hatlar", value: "line" },
 						{ label: "Duraklar", value: "stop" },
 						{ label: "Favoriler", value: "fav" },
 					]}
 					value={filter}
-					onChange={(v: "none" | "stop" | "line" | "fav") => setFilter(v)}
+					onChange={(v: "stop" | "line" | "fav") => setFilter(v)}
 				/>
 
 				{filter == "fav" ? (

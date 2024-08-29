@@ -38,7 +38,7 @@ export const StopPage = () => {
                 subtitle={data && data.stop.area.join(", ")}
                 
                 favourite={faves.some(f => f.ty == "stop" && f.id == stop)}
-                setFavourite={(f) => setFaves(f ? [...faves, { ty: "stop", id: stop }] : faves.filter(l => l.ty !== "stop" && l.id !== stop))}
+                setFavourite={(f) => setFaves(f ? [...faves, { ty: "stop", id: stop }] : faves.filter(l => !(l.ty == "stop" && l.id == stop)))}
             />
 
             <Group>

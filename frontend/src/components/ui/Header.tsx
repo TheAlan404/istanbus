@@ -19,8 +19,8 @@ export const Header = ({
     setFavourite?: (fave: boolean) => void;
 }) => {
     return (
-        <Group justify="space-between" wrap="nowrap">
-            <Group wrap="nowrap">
+        <Group justify="space-between" align="start" wrap="nowrap">
+            <Group wrap="nowrap" align="start">
                 {icon}
                 <Stack gap={0}>
                     <Title order={4}>
@@ -31,7 +31,7 @@ export const Header = ({
                     </Text>
                 </Stack>
             </Group>
-            <Group>
+            <Group wrap="nowrap" gap="xs">
                 {favourite !== undefined && (
                     <Tooltip label={favourite ? "Favorilerden çıkar" : "Favorilere ekle"}>
                         <ActionIcon

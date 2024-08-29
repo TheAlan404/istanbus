@@ -15,7 +15,7 @@ export const getAnnouncementsForEntry = ({
 }) => {
     if(!isToday(day)) return;
     return details.announcements.filter(x => (
-        x.type == "Sefer"
+        x.type == "cancellation"
         && x.time == entry.time
         // awesome code uwu
         && x.direction == unturkish(details.stops[dir].stops[0].name)

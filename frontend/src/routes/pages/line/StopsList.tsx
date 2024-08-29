@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { DirectionControl } from "./DirectionControl";
-import { Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { StopCard } from "../../../components/cards/StopCard";
 import { LineDetails } from "@common/types/Line";
 
 export const StopsList = ({ details }: { details?: LineDetails }) => {
     const [direction, setDirection] = useState(0);
+    const [isPending, startTransition] = useTransition();
 
     let stops = details?.stops?.[direction]?.stops || [];
 
@@ -14,13 +15,19 @@ export const StopsList = ({ details }: { details?: LineDetails }) => {
             <DirectionControl
                 details={details}
                 direction={direction}
-                setDirection={setDirection}
+                setDirection={(dir) => startTransition(() => setDirection(dir))}
             />
 
             <Stack>
-                {stops.map((stop, i) => (
-                    <StopCard stop={stop} index={i + 1} key={stop.id} />
-                ))}
+                {isPending ? (
+                    <Stack align="center">
+                        <Loader />
+                    </Stack>
+                ) : (
+                    stops.map((stop, i) => (
+                        <StopCard stop={stop} index={i + 1} key={stop.id} />
+                    ))
+                )}
             </Stack>
         </Stack>
     )

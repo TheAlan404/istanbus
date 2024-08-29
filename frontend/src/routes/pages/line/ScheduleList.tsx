@@ -1,13 +1,14 @@
 import { LineDetails } from "@common/types/Line";
 import { ScheduleDay } from "@common/types/Schedule";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { ScheduleEntryCard } from "../../../components/cards/ScheduleEntryCard";
 import { getAnnouncementsForEntry, isAvailable, isToday } from "../../../utils/schedule";
-import { Divider, Group, Spoiler, Stack, Table, Text, Title } from "@mantine/core";
+import { Divider, Group, Loader, Spoiler, Stack, Table, Text, Title } from "@mantine/core";
 import { DirectionControl } from "./DirectionControl";
 
 export const ScheduleList = ({ details }: { details?: LineDetails }) => {
     const [direction, setDirection] = useState(0);
+    const [isPending, startTransition] = useTransition();
 
     let days = details?.schedule?.directions?.[direction]?.days || [];
 
@@ -16,7 +17,7 @@ export const ScheduleList = ({ details }: { details?: LineDetails }) => {
     let hdr = ["workdays", "saturday", "sunday"] as ScheduleDay["type"][];
     for (let { entries, type } of days) {
         entries.forEach((entry, i) => {
-            if(!rows[i]) rows[i] = [null, null, null];
+            if (!rows[i]) rows[i] = [null, null, null];
 
             rows[i][hdr.indexOf(type)] = (
                 <ScheduleEntryCard
@@ -46,71 +47,81 @@ export const ScheduleList = ({ details }: { details?: LineDetails }) => {
             <DirectionControl
                 details={details}
                 direction={direction}
-                setDirection={setDirection}
+                setDirection={(dir) => startTransition(() => setDirection(dir))}
             />
 
-            <Stack gap="xs">
-                {!!rows.length && (
-                    <Title order={6}>
-                        Bir sonraki kalkışlar:
-                    </Title>
-                )}
+            {isPending ? (
+                <Stack align="center">
+                    <Loader />
+                </Stack>
+            ) : (
+                <Stack>
+                    <Stack gap="xs">
+                        {!!rows.length && (
+                            <Title order={6}>
+                                Bir sonraki kalkışlar:
+                            </Title>
+                        )}
 
-                {!next.length && !!rows.length && (
-                    <Text c="dimmed">
-                        Kalkış bulunamadı :(
-                    </Text>
-                )}
+                        {!next.length && !!rows.length && (
+                            <Text c="dimmed">
+                                Kalkış bulunamadı :(
+                            </Text>
+                        )}
 
-                <Spoiler maxHeight={36} hideLabel="Daha az göster" showLabel="Tümünü göster">
-                    <Group px="sm">
-                        {next.map((entry, i) => (
-                            <ScheduleEntryCard
-                                entry={entry}
-                                day={currentDayType}
-                                announcements={getAnnouncementsForEntry({
-                                    entry,
-                                    day: currentDayType,
-                                    details,
-                                    dir: direction,
-                                })}
-                                key={i}
-                                withBorder
-                            />
-                        ))}
-                    </Group>
-                </Spoiler>
-            </Stack>
+                        <Spoiler maxHeight={36} hideLabel="Daha az göster" showLabel="Tümünü göster">
+                            <Group px="sm">
+                                {next.map((entry, i) => (
+                                    <ScheduleEntryCard
+                                        entry={entry}
+                                        day={currentDayType}
+                                        announcements={getAnnouncementsForEntry({
+                                            entry,
+                                            day: currentDayType,
+                                            details,
+                                            dir: direction,
+                                        })}
+                                        key={i}
+                                        withBorder
+                                    />
+                                ))}
+                            </Group>
+                        </Spoiler>
+                    </Stack>
 
-            <Divider
-                w="100%"
-                label="Tablo"
-            />
-
-            <Stack>
-                {!!rows.length ? (
-                    <Table
-                        stickyHeader
-                        stickyHeaderOffset={60}
-                        
-                        align="center"
-                        data={{
-                            head: ["İş Günleri", "Cumartesi", "Pazar"]
-                                .map(h => (
-                                    <Text inherit ta="center" w="100%">
-                                        {h}
-                                    </Text>
-                                )),
-                            body: rows,
-                        }}
-                        style={{ tableLayout: "fixed" }}
+                    <Divider
+                        w="100%"
+                        label="Tablo"
                     />
-                ) : (
-                    <Text c="dimmed" ta="center">
-                        Çizelge boş :(
-                    </Text>
-                )}
-            </Stack>
+
+                    <Stack>
+                        {!!rows.length ? (
+                            <Table
+                                stickyHeader
+                                stickyHeaderOffset={60}
+
+                                align="center"
+                                data={{
+                                    head: ["İş Günleri", "Cumartesi", "Pazar"]
+                                        .map(h => (
+                                            <Text inherit ta="center" w="100%">
+                                                {h}
+                                            </Text>
+                                        )),
+                                    body: rows,
+                                }}
+                                style={{ tableLayout: "fixed" }}
+                            />
+                        ) : (
+                            <Text c="dimmed" ta="center">
+                                Çizelge boş :(
+                            </Text>
+                        )}
+                    </Stack>
+                </Stack>
+            )}
+
+
         </Stack>
     )
 }

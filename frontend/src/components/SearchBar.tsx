@@ -9,7 +9,6 @@ import { ErrorMessage } from "./ui/ErrorMessage";
 export const SearchBar = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState<"none" | "stop" | "line">("none");
 
     const {
         error,
@@ -18,7 +17,7 @@ export const SearchBar = () => {
         results,
     } = useSearch({
         search,
-        filter,
+        filter: "line",
     });
 
     const options = results.slice(0, 100).map((result, i) => (
@@ -53,7 +52,7 @@ export const SearchBar = () => {
         >
             <Combobox.Target>
                 <InputBase
-                    rightSection={loading ? <Loader /> : <Combobox.Chevron />}
+                    rightSection={loading ? <Loader m="xs" /> : <Combobox.Chevron />}
                     w="50vw"
                     value={search}
                     onChange={(event) => {
@@ -71,33 +70,16 @@ export const SearchBar = () => {
                 />
             </Combobox.Target>
 
-            <Combobox.Dropdown mah="50vh">
+            <Combobox.Dropdown mah="50vh" p={0}>
                 <ScrollArea.Autosize type="scroll" mah="50vh">
                     <Stack gap={0}>
-                        <Group p="sm" w="100%">
-                            <SegmentedControl
-                                fullWidth
-                                data={[
-                                    { label: "Hepsi", value: "none" },
-                                    { label: "Hatlar", value: "line" },
-                                    { label: "Duraklar", value: "stop" },
-                                ]}
-                                value={filter}
-                                onChange={(v: "none" | "stop" | "line") => {
-                                    console.log("CHANGE", v);
-                                    setFilter(v);
-                                    combobox.focusSearchInput();
-                                }}
-                            />
-                        </Group>
-
                         <ErrorMessage
                             error={loading ? null : error}
                             retry={refetch}
                         />
 
                         <Combobox.Options>
-                            <Stack px="sm">
+                            <Stack gap={0}>
                                 {options.length > 0 ? options : (
                                     search && (
                                         <Combobox.Empty>Sonuç yok :c</Combobox.Empty>
